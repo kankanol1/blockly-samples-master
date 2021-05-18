@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script src="../node_modules/blockly/blockly_compressed.js"></script>
+    <script src="../node_modules/blockly/blocks_compressed.js"></script>
+    <script src="../node_modules/blockly/msg/en.js"></script>
+
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
+        body {
+            background-color: #fff;
+            font-family: sans-serif;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-weight: normal;
+            font-size: 140%;
+        }
+
+        table {
+            height: 100%;
+            width: 100%;
+        }
+
+        #blocklyArea {
+            height: 99%;
+            background: #fc9;
+            text-align: center;
+        }
+
+        .blocklyToolboxCategory {
+            /*position: relative;*/
+        }
+
+        .blocklyToolboxCategory > .blocklyTreeRow {
+            /*position: absolute;*/
+
+        }
+
+        .category-shape {
+        }
+
+        /*.category-shape:*/
+    </style>
+
+
+    <style>
+
+        .geras-renderer.classic-theme .blocklySelected > .blocklyPath {
+            stroke: red;
+            stroke-width: 3px;
+        }
+
+        .blocklyTreeRow {
+            /*border-left: none !important;*/
+            position: relative;
+            font-family: 'Avenir', Helvetica, Arial, sans-serif;
+        }
+
+        .blocklyTreeRow {
+
+        }
+
+    </style>
+</head>
+<body>
+<table>
+    <tr>
+        <th>ttoutou</th>
+        <th>adfa</th>
+    </tr>
+
+    <tr>
+        <div id="blocklyArea">
+
+        </div>
+    </tr>
+</table>
+
+<div id="blocklyDiv" style="position: absolute">
+
+</div>
+<xml id="toolbox" style="display: none">
+    <!--    <block type="controls_if"></block>-->
+    <!--    <block type="controls_repeat_ext"></block>-->
+    <!--    <block type="logic_compare"></block>-->
+    <!--    <block type="math_number"></block>-->
+    <!--    <block type="math_arithmetic"></block>-->
+    <!--    <block type="text"></block>-->
+    <!--    <block type="text_print"></block>-->
+    <!--    <block type="string_length"></block>-->
+    <!--    <block type="string_length1"></block>-->
+    <category
+            colour="#eaaaff"
+            class="category-shape"
+            id="category1"
+            name="Text"
+    >
+        <block type="text"></block>
+        <block type="string_length"></block>
+    </category>
+    <category colour="#ff0000" name="Control">
+        <block type="controls_if"></block>
+        <block type="controls_whileUntil"></block>
+        <block type="controls_for"></block>
+    </category>
+    <category colour="#00ff00" name="Logic">
+        <block type="logic_compare"></block>
+        <block type="logic_operation"></block>
+        <block type="logic_boolean"></block>
+    </category>
+    <category name="Variables" custom="VARIABLE"></category>
+    <category name="Functions" custom="PROCEDURE"></category>
+    <category name="Colours" custom="COLOUR_PALETTE"></category>
+</xml>
+<script>
+
+    // JSON定义格式：
+    Blockly.Blocks['string_length'] = {
+        init: function () {
+            this.jsonInit({
+                "message0": 'length of %1',
+                "args0": [
+                    {
+                        "type": "input_value",
+                        "name": "VALUE",
+                        "check": "String"
+                    }
+                ],
+                "output": "Number",
+                "colour": 160,
+                "tooltip": "Returns number of letters in the provided text.",
+                "helpUrl": "https://www.w3schools.com/jsref/jsref_length_string.asp"
+            });
+        }
+    };
+
+    //    JavaScript定义格式
+    Blockly.Blocks["string_length1"] = {
+        init: function () {
+            this.appendValueInput("VALUE")
+                .setCheck("String")
+                .appendField("length of");
+            this.setOutput(true, 'Number');
+            this.setColour("#ff00df");
+            this.setTooltip("Returns number of letters in the provided text.");
+            this.setHelpUrl("https://www.w3schools.com/jsref/jsref_length_string.asp")
+        }
+    }
+    // 添加生成器函数
+    /* Blockly.JavaScript['string_length'] = function (block) {
+         var argument0 = Blockly.JavaScript.valueToCode(
+             block,
+             'VALUE',
+             Blockly.JavaScript.ORDER_FUNCTION_CALL
+         ) || '\'\'';
+         return [argument0 + '.length', Blockly.JavaScript.ORDER_MEMBER];
+     };*/
+
+    /**
+     * Construct the blocks required by the flyout for the colours category.
+     * @param {!Blockly.Workspace} workspace The workspace this flyout is for.
+     * @return {!Array.<!Element>} Array of XML block elements.
+     */
+    var myApplication;
+    myApplication.coloursFlyoutCallback = function (workspace) {
+        // Returns an array of hex colours, e.g. ['#4286f4', '#ef0447']
+        var colourList = myApplication.getPalette();
+        var xmlList = [];
+        if (Blockly.Blocks['colour_picker']) {
+            for (var i = 0; i < colourList.length; i++) {
+                var blockText = '<xml>' +
+                    '<block type="colour_picker">' +
+                    '<field name="COLOUR">' + colourList[i] + '</field>' +
+                    '</block>' +
+                    '</xml>';
+                var block = Blockly.Xml.textToDom(blockText).firstChild;
+                xmlList.push(block);
+            }
+        }
+        return xmlList;
+    };
+
+</script>
+<script>
+    var blocklyArea = document.getElementById('blocklyArea');
+    var blocklyDiv = document.getElementById('blocklyDiv');
+
+    var toolbox = document.getElementById('toolbox');
+    var category1 = document.getElementById('category1');
+    var block = document.createElement('block');
+    block.setAttribute('type', 'controls_if');
+    category1.appendChild(block);
+    // toolbox.appendChild(category1);
+
+    const workspace = Blockly.inject(
+        blocklyDiv,
+        {
+            // toolbox: document.getElementById('toolbox'),
+            toolbox: toolbox,
+            grid:
+                {
+                    spacing: 50,
+                    length: 8,
+                    colour: '#eee',
+                    snap: true
+                },
+            media: 'https://unpkg.com/blockly/media/',
+            move: {
+                scrollbars: {
+                    vertical: true,
+                    horizontal: true
+                }
+            }
+        }
+    )
+    var onresize = function (e) {
+        var element = blocklyArea;
+        var x = 0;
+        var y = 0;
+        do {
+            x += element.offsetLeft;
+            y += element.offsetTop;
+            element = element.offsetParent;
+        } while (element);
+        // Position blocklyDiv over blocklyArea.
+        blocklyDiv.style.left = x + 'px';
+        blocklyDiv.style.top = y + 'px';
+        blocklyDiv.style.width = blocklyArea.offsetWidth + 'px';
+        blocklyDiv.style.height = blocklyArea.offsetHeight + 'px';
+        Blockly.svgResize(workspace);
+    };
+    window.addEventListener('resize', onresize, false);
+    onresize();
+
+
+    workspace.registerToolboxCategoryCallback(
+        'COLOUR_PALETTE', myApplication.coloursFlyoutCallback);
+    // Blockly.svgResize(workspace); // 可以将该语句放在监听中
+</script>
+</body>
+</html>
+
+<!--
+
+
+  toolbox?: Blockly.utils.toolbox.ToolboxDefinition;
+    readOnly?: boolean;
+    trashcan?: boolean;
+    maxInstances?: {[type: string]: number;};
+    maxTrashcanContents?: number;
+    collapse?: boolean;
+    comments?: boolean;
+    disable?: boolean;
+    sounds?: boolean;
+    rtl?: boolean;
+    horizontalLayout?: boolean;
+    toolboxPosition?: string;
+    css?: boolean;
+    oneBasedIndex?: boolean;
+    media?: string;
+    theme?: Blockly.Theme | BlocklyThemeOptions;
+    move?: {
+      scrollbars?: boolean;
+      drag?: boolean;
+      wheel?: boolean;
+    };
+    grid?: {
+      spacing?: number;
+      colour?: string;
+      length?: number;
+      snap?: boolean;
+    };
+    zoom?: {
+      controls?: boolean;
+      wheel?: boolean;
+      startScale?: number;
+      maxScale?: number;
+      minScale?: number;
+      scaleSpeed?: number;
+      pinch?: boolean;
+    };
+    renderer?: string;
+    parentWorkspace?: Blockly.WorkspaceSvg;
+-->

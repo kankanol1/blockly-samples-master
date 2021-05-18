@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--https://blog.csdn.net/xiatiancc/article/details/80910994?utm_term=blockly&utm_medium=distribute.pc_aggpage_search_result.none-task-blog-2~all~sobaiduweb~default-0-80910994&spm=3001.4430-->
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script src="./storage.js"></script>
+    <script src="../node_modules/blockly/blockly_compressed.js"></script>
+    <script src="../node_modules/blockly/blocks_compressed.js"></script>
+
+    <script src="../node_modules/blockly/javascript_compressed.js"></script>
+    <script src="../node_modules/blockly/python_compressed.js"></script>
+    <script src="../node_modules/blockly/php_compressed.js"></script>
+    <script src="../node_modules/blockly/lua_compressed.js"></script>
+    <script src="../node_modules/blockly/dart_compressed.js"></script>
+    <script src="../node_modules/blockly/msg/en.js"></script>
+    <!--    <script>
+            Blockly.Blocks["console"] = {
+                init: function () {
+                    this.appendValueInput("VALUE")
+                        .setCheck("String")
+                        .appendField("length of");
+                    this.setOutput(true, 'Number');
+                    this.setColour("#ff00df");
+                    this.setTooltip("Returns number of letters in the provided text.");
+                    this.setHelpUrl("https://www.w3schools.com/jsref/jsref_length_string.asp")
+                }
+            }
+        </script>-->
+
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
+        body {
+            background-color: #fff;
+            font-family: sans-serif;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-weight: normal;
+            font-size: 140%;
+        }
+
+        table {
+            height: 100%;
+            width: 100%;
+        }
+
+        #blocklyArea {
+            height: 60%;
+            background: #fc9;
+            text-align: center;
+        }
+
+    </style>
+
+
+    <style>
+        #textarea,
+        #dart,
+        #xml,
+        #lua,
+        #php,
+        #python{
+            width: 100%;
+        }
+        .blocklyFlyoutLabel.myLabelStyle > .blocklyFlyoutLabelText {
+            /*font-style: italic;*/
+            fill: black;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .blocklyFlyoutButton.myButtonStyle > .blocklyText {
+            fill: black;
+        }
+
+        .blocklyFlyoutButton.myButtonStyle > .blocklyFlyoutButtonBackground {
+            fill: yellow;
+        }
+
+        .box-textarea{
+            display: flex;
+
+        }
+        .box-textarea>div{
+            flex-grow: 1;
+        }
+    </style>
+</head>
+<body>
+<div id="blocklyArea"></div>
+<div id="blocklyDiv" style="position: absolute">
+
+</div>
+<xml id="toolbox" style="display: none">
+    <category name="颜色" colour="red">
+        <block type="colour_picker"></block>
+        <block type="colour_random"></block>
+        <block type="colour_rgb"></block>
+        <block type="colour_blend"></block>
+        <block type="colour_blend"></block>
+    </category>
+    <sep gap="30"></sep>
+    <category name="文本"  colour="rgb(91, 165, 140)">
+        <block type="text"></block>
+        <block type="text_multiline"></block>
+        <block type="text_join"></block>
+        <block type="text_create_join_container"></block>
+        <block type="text_create_join_item"></block>
+        <block type="text_append"></block>
+        <block type="text_length"></block>
+        <block type="text_isEmpty"></block>
+        <block type="text_indexOf"></block>
+        <block type="text_charAt"></block>
+        <block type="text_getSubstring"></block>
+        <block type="text_changeCase"></block>
+        <block type="text_trim"></block>
+        <block type="text_print"></block>
+        <block type="text_prompt_ext"></block>
+        <block type="text_prompt"></block>
+        <block type="text_replace"></block>
+        <block type="text_reverse"></block>
+
+    </category>
+    <sep gap="30"></sep>
+    <category name="数组" colour="rgb(116, 91, 165)">
+        <block type="lists_create_empty"></block>
+        <block type="lists_repeat"></block>
+        <block type="lists_reverse"></block>
+        <block type="lists_isEmpty"></block>
+        <block type="lists_length"></block>
+        <block type="lists_create_with"></block>
+        <block type="lists_create_with_container"></block>
+        <block type="lists_create_with_item"></block>
+        <block type="lists_indexOf"></block>
+        <block type="lists_getIndex"></block>
+        <block type="lists_setIndex"></block>
+        <block type="lists_getSublist"></block>
+        <block type="lists_sort"></block>
+        <block type="lists_split"></block>
+    </category>
+    <sep gap="30"></sep>
+
+    <category name="逻辑" colour="rgb(91, 128, 165)">
+        <block type="logic_boolean"></block>
+        <block type="controls_if"></block>
+        <block type="controls_if"></block>
+        <block type="controls_ifelse"></block>
+        <block type="logic_compare"></block>
+        <block type="logic_operation"></block>
+        <block type="logic_negate"></block>
+        <block type="logic_null"></block>
+        <block type="logic_ternary"></block>
+        <block type="controls_if_if"></block>
+        <block type="controls_if_elseif"></block>
+        <block type="controls_if_else"></block>
+
+    </category>
+    <sep gap="30"></sep>
+    <category name="循环" colour="rgb(91, 165, 91)">
+        <block type="controls_repeat_ext"></block>
+        <block type="controls_repeat"></block>
+        <block type="controls_whileUntil"></block>
+        <block type="controls_for"></block>
+        <block type="controls_forEach"></block>
+        <block type="controls_flow_statements"></block>
+    </category>
+
+
+    <sep gap="30"></sep>
+    <category name="数学" colour="rgb(91, 103, 165)">
+        <block type="math_number"></block>
+        <block type="math_arithmetic"></block>
+        <block type="math_single"></block>
+        <block type="math_trig"></block>
+        <block type="math_constant"></block>
+        <block type="math_number_property"></block>
+<!--        <block type="math_change"></block>-->
+        <block type="math_round"></block>
+        <block type="math_on_list"></block>
+        <block type="math_modulo"></block>
+        <block type="math_constrain"></block>
+        <block type="math_random_int"></block>
+        <block type="math_random_float"></block>
+        <block type="math_atan2"></block>
+    </category>
+
+    <sep gap="30"></sep>
+    <category name="变量" colour="rgb(165, 91, 128)">
+        <block type="variables_get"></block>
+        <block type="variables_set"></block>
+    </category>
+    <sep gap="30"></sep>
+
+
+    <category name="Test" colour="blue">
+        <label text="基本" web-class="myLabelStyle"></label>
+        <block type="logic_operation"></block>
+        <block type="logic_operation" disabled="true"></block>
+        <block type="math_number">
+            <field name="NUM">42</field>
+        </block>
+
+
+        <label text="自定义" web-class="myLabelStyle"></label>
+        <block type="controls_for">
+            <value name="FROM">
+                <block type="math_number">
+                    <field name="NUM">1</field>
+                </block>
+            </value>
+            <value name="TO">
+                <block type="math_number">
+                    <field name="NUM">2</field>
+                </block>
+            </value>
+            <value name="BY">
+                <block type="math_number">
+                    <field name="NUM">1</field>
+                </block>
+            </value>
+        </block>
+        <block type="math_arithmetic">
+            <field name="OP">ADD</field>
+            <value name="A">
+                <shadow type="math_number">
+                    <field name="NUM">1</field>
+                </shadow>
+            </value>
+            <value name="B">
+                <shadow type="math_number">
+                    <field name="NUM">1</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="math_number">
+            <field name="NUM">42</field>
+        </block>
+        <block type="text_print"></block>
+        <sep gap="60"></sep>
+
+
+        <button web-class="myButtonStyle" text="按钮事件" callbackKey="myFirstButtonPressed"></button>
+    </category>
+
+
+</xml>
+<div class="box-textarea" style="display: flex">
+    <div><textarea name="textarea" id="textarea" cols="30" rows="10"></textarea><p>JavaScript</p></div>
+    <div><textarea name="python" id="python" cols="30" rows="10"></textarea><p>Python</p></div>
+    <div><textarea name="dart" id="dart" cols="30" rows="10"></textarea><p></p></div>
+    <div><textarea name="lua" id="lua" cols="30" rows="10"></textarea></div>
+    <div><textarea name="php" id="php" cols="30" rows="10"></textarea></div>
+</div>
+<!--<textarea name="python" id="python" cols="30" rows="10"></textarea>-->
+<!--<textarea name="xml" id="xml" cols="30" rows="10"></textarea>-->
+<!--<textarea name="dart" id="dart" cols="30" rows="10"></textarea>-->
+<!--<textarea name="lua" id/="lua" cols="30" rows="10"></textarea>-->
+<!--<textarea name="php" id="php" cols="30" rows="10"></textarea>-->
+<button onClick="computeCode()">执行</button>
+<button onClick="saveProject()">保存在本地</button>
+<script>
+
+
+</script>
+<script>
+    var blocklyArea = document.getElementById('blocklyArea');
+    var blocklyDiv = document.getElementById('blocklyDiv');
+
+    var toolbox = document.getElementById('toolbox');
+
+    const workspace = Blockly.inject(
+        blocklyDiv,
+        {
+            // toolbox: document.getElementById('toolbox'),
+            toolbox: toolbox,
+            grid:
+                {
+                    spacing: 50,
+                    length: 3,
+                    colour: 'green',
+                    snap: true
+                },
+            media: 'https://unpkg.com/blockly/media/',
+            move: {
+                scrollbars: {
+                    vertical: true,
+                    horizontal: true
+                }
+            },
+            zoom:
+                {
+                    controls: true,
+                    wheel: false,
+                    startScale: 1.0,
+                    maxScale: 3,
+                    minScale: 0.3,
+                    scaleSpeed: 1.2
+                },
+            trashcan: true
+        }
+    )
+    var onresize = function (e) {
+        var element = blocklyArea;
+        var x = 0;
+        var y = 0;
+        do {
+            x += element.offsetLeft;
+            y += element.offsetTop;
+            element = element.offsetParent;
+        } while (element);
+        // Position blocklyDiv over blocklyArea.
+        blocklyDiv.style.left = x + 'px';
+        blocklyDiv.style.top = y + 'px';
+        blocklyDiv.style.width = blocklyArea.offsetWidth + 'px';
+        blocklyDiv.style.height = blocklyArea.offsetHeight + 'px';
+        Blockly.svgResize(workspace);
+    };
+
+    window.addEventListener('resize', onresize, false);
+    onresize();
+    workspace.registerButtonCallback('myFirstButtonPressed', function (e) {
+        var code = Blockly.JavaScript.workspaceToCode(workspace);
+        alert("代码:", code);
+    })
+
+    function myUpdateFunction(event) {
+        var code = Blockly.JavaScript.workspaceToCode(workspace);
+        document.getElementById('textarea').value = code;
+
+        code = Blockly.Python.workspaceToCode(workspace);
+        document.getElementById('python').value = code;
+
+        // code = Blockly.XML.workspaceToCode(workspace);document.getElementById('xml').value = code;
+        code = Blockly.Dart.workspaceToCode(workspace);document.getElementById('dart').value = code;
+        code = Blockly.Lua.workspaceToCode(workspace);document.getElementById('lua').value = code;
+        code = Blockly.PHP.workspaceToCode(workspace);document.getElementById('php').value = code;
+    }
+    workspace.addChangeListener(onFirstComment)
+    workspace.addChangeListener(myUpdateFunction);
+
+
+    function computeCode(e) {
+
+        console.log(e);
+        var code = Blockly.JavaScript.workspaceToCode(workspace);
+        console.log(code);
+        eval(code);
+    }
+
+    function onFirstComment(event){
+        if(event.element=='comment' && !event.oldValue){
+            alert('Congratulations on creating your first comment!');
+            workspace.removeChangeListener(onFirstComment)
+        }
+    }
+
+    function saveProject(e){
+        console.log(e);
+        window.setTimeout(BlocklyStorage.restoreBlocks(workspace), 0);
+    }
+
+</script>
+</body>
+</html>
